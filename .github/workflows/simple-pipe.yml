@@ -48,25 +48,12 @@ jobs:
       run: | 
         java -jar greetings-actions.jar ${{ github.event.inputs.myValues }} 
         
-  count-args:
-      
-    runs-on: ubuntu-latest
-    
-    steps: 
-    - id: report-count
-      uses: gwstudent/arg-count-action@main
-      with: 
-        arguments-to-count: ${{ github.event.inputs.myValues }}
-    - run: echo 
-    - shell: bash
-      run: |
-        echo argument count is ${{ steps.report-count.outputs.arg-count }}  
-        exit 1
+
         
   create-issue-on-failure:
 
     runs-on: ubuntu-latest 
-    needs: [test-run, count-args]
+    needs: [test-run]
     if: always() && failure() 
     steps:
       - name: invoke workflow to create issue
